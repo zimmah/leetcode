@@ -11,13 +11,11 @@ We need to keep track of:
 - read index (to traverse the array)
 - write index (keep track of where to write)
 - the previous element (to compare with current element)
-- size (return value)
 
 Once we traverse the whole array, we're done. We can not exit early.
-As the first element is always a value we haven't seen before and the guard clause ensures it exists (or else we return 0) we can start reading and writing at index 1.  
-Make sure to count this value in size as well.
+As the first element is always a value we haven't seen before and the guard clause ensures it exists (or else we return 0) we can start reading and writing at index 1.
 
-Only if the current element is different than the last seen element, include it and update the write index and size.
+Only if the current element is different than the last seen element, include it and update the write index.
 
 In all cases, update the last seen element and the read index.
 
@@ -46,18 +44,16 @@ impl Solution {
         let mut read_idx = 1;
         let mut write_idx = 1;
         let mut last_seen = nums[0];
-        let mut size = 1;
 
         while read_idx < nums.len() {
             if nums[read_idx] != last_seen {
                 nums[write_idx] = nums[read_idx];
-                size += 1;
                 write_idx += 1;
             }
             last_seen = nums[read_idx];
             read_idx += 1;
         }
-        return size;
+        return write_idx as i32;
     }
 }
 ```

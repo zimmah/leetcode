@@ -8,10 +8,10 @@ Overwriting the same value won't matter, and overwriting a value we don't want t
 
 ## Approach
 
-We need to keep track of 3 values. The reader, the writer, and the amount of times we have written a value.
+We need to keep track of 2 values. The reader, and the writer.
 
 We continue for as long as there are elements to read.
-Whenever the value we encounter is not a value to be removed, we write the current value to the current write index, and then move the write index and update the size.
+Whenever the value we encounter is not a value to be removed, we write the current value to the current write index, and then move the write index.
 
 Regardless of if we write or not, we always move the reader.
 
@@ -38,18 +38,16 @@ impl Solution {
     pub fn remove_element(nums: &mut Vec<i32>, val: i32) -> i32 {
         let mut write_idx = 0;
         let mut read_idx = 0;
-        let mut size = 0;
 
         while read_idx < nums.len() {
             if nums[read_idx] != val {
                 nums[write_idx] = nums[read_idx];
                 write_idx += 1;
-                size += 1;
             }
             read_idx += 1;
         }
 
-        return size;
+        return write_idx as i32;
     }
 }
 ```
