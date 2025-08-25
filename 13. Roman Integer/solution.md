@@ -12,7 +12,10 @@ Then we return the total
 
 ## Approach
 
-See intuition
+Improvements after the first pass:
+I noticed I had several of the same iterators, so I wanted to clean them up. Then I realized solving it from the back is slightly more efficient because there is no need to look ahead. That way we also don't need to deal with accessing characters by index.
+
+The overall approach is still similar.
 
 ## Complexity
 
@@ -42,23 +45,23 @@ impl Solution {
             ('L', 50),
             ('C', 100),
             ('D', 500),
-            ('M', 1000)
+            ('M', 1000),
         ]);
-        let mut count = 0;
-        for (index, value) in s.chars().enumerate() {
-            let c = s[index..].chars().next().unwrap();
-            let current = roman_number[&c];
-            if index + 1 < s.len() {
-                let cn = s[index+1..].chars().next().unwrap();
-                let next = roman_number[&cn];
-                if current < next {
-                    count -= current;
-                    continue;
-                }
+
+        let mut total = 0;
+        let mut prev = 0;
+
+        for c in s.chars().rev() {
+            let value = roman_number[&c];
+            if value < prev {
+                total -= value;
+            } else {
+                total += value;
             }
-            count += current;
+            prev = value;
         }
-        count
+
+        total
     }
 }
 ```
