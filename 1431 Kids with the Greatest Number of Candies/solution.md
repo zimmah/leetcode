@@ -14,8 +14,8 @@ See intuition.
 
 ### Time
 
-$$O(n^2)$$
-We need to traverse the array twice, first to find the max, then once again to assign true/false.
+$$O(n)$$
+We need to traverse the array twice, first to find the max, then once again to assign true/false. These operations are sequential, so it remains `O(n)` as `O(2n)` is still `O(n)`
 
 ### Space
 
