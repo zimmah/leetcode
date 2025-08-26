@@ -86,3 +86,51 @@ impl RandomizedSet {
     }
 }
 ```
+
+A more "rustic" way of doing it I found in the solutions of other LeetCoders (same method, just more commonly used syntax)
+
+```rust
+use std::collections::HashMap;
+use rand::seq::SliceRandom;
+
+struct RandomizedSet {
+    hash: HashMap<i32, usize>,
+    v: Vec<i32>,
+}
+
+impl RandomizedSet {
+
+    fn new() -> Self {
+        Self {
+            hash: HashMap::new(),
+            v: Vec::new(),
+        }
+    }
+
+    fn insert(&mut self, val: i32) -> bool {
+        if self.hash.contains_key(&val) {
+            return false;
+        }
+        self.hash.insert(val, self.v.len());
+        self.v.push(val);
+        true
+    }
+
+    fn remove(&mut self, val: i32) -> bool {
+        match self.hash.remove(&val) {
+            None => false,
+            Some(i) => {
+                self.v.swap_remove(i);
+                if i < self.v.len() {
+                    self.hash.insert(self.v[i], i);
+                }
+                true
+            }
+        }
+    }
+
+    fn get_random(&self) -> i32 {
+        *self.v.choose(&mut rand::thread_rng()).unwrap()
+    }
+}
+```
